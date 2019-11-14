@@ -1,3 +1,6 @@
+# StoHi-C Step 1: 3D embedding using tSNE
+
+
 # AUTHOR INFORMATION:
 # Kimberly MacKay
 # kimberly.mackay@usask.ca
@@ -14,6 +17,8 @@
 # import relavent libraries
 import numpy as np
 from sklearn.manifold import TSNE
+import time
+
 
 # define function for reaching in data
 def populate_matrix(filename, matrix):
