@@ -14,13 +14,6 @@
 # import relavent libraries
 import numpy as np
 from sklearn.manifold import TSNE
-from mpl_toolkits import mplot3d
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from matplotlib import animation
-import time
-
 
 # define function for reaching in data
 def populate_matrix(filename, matrix):
@@ -82,29 +75,3 @@ np.savetxt("TSNE_results.txt", data_embedded)
 
 # output distance matrix
 np.savetxt("TSNE_distance_matrix.txt", dist_matrix)
-
-# generate a figure of the results
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-
-def init():
-    # chr1 data
-	ax.scatter(data_embedded[0:557,0], data_embedded[0:557,1], data_embedded[0:557,2], c='purple', marker='o', alpha=0.5)
-	
-	# chr2 data
-	ax.scatter(data_embedded[558:1011,0], data_embedded[558:1011,1], data_embedded[558:1011,2], c='orange', marker='o', alpha=0.5)
-	
-	# chr3 data
-	ax.scatter(data_embedded[1012:1257,0], data_embedded[1012:1257,1], data_embedded[1012:1257,2], c='green', marker='o' , alpha=0.5)
-	
-
-	return fig,
-
-def animate(i):
-    ax.view_init(elev=10., azim=i)
-    return fig,
-	
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=360, interval=20, blit=True)                     
-anim.save('TSNE_basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])                               
-
-plt.savefig("TSNE_fig.png")
