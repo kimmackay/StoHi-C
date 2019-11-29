@@ -1,5 +1,6 @@
 # StoHi-C Step 1: 3D embedding using tSNE
 
+# Note: currently this is not parameterized but it will be in the near future
 
 # AUTHOR INFORMATION:
 # Kimberly MacKay
@@ -19,8 +20,7 @@ import numpy as np
 from sklearn.manifold import TSNE
 import time
 
-
-# define function for reaching in data
+# define function for reading in data
 def populate_matrix(filename, matrix):
 	infile = open(filename, "r")
 
@@ -51,8 +51,6 @@ def populate_matrix(filename, matrix):
 	infile.close()
 	return matrix
 
-
-## import the output from step 1
 # initialize the distance matrix
 dist_matrix = np.zeros((1258,1258))
 print("importing file..." )
@@ -70,7 +68,6 @@ print("running tSNE...")
 start_time = time.time()
 data_embedded = TSNE(n_components = 3, perplexity=5.0, early_exaggeration=3.0, n_iter=5000, method='exact', init='pca').fit_transform(dist_matrix)
 stop_time = time.time()
-
 
 print("tSNE runtime: " + str(stop_time - start_time) + " seconds")
 
