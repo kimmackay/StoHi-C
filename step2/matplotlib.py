@@ -1,5 +1,11 @@
 ## 3D visualization and basic animation of XYZ coordinates from step 1 of StoHi-C
+## This script uses matplotlib to generate a 3D scatterplot and outputs a basic animation
 ## currently all the parameters are hardcoded for s. pombe data
+
+## Argument 1: the XYZ co-ordinates for each genomic bin generated from step 1
+##			   this file should have the XYZ coords for each bin on a separate line
+##			   each coord should be separated by white space, bins should be in sorted
+##			   numerical order, there shouldn't be any column or row labels
 
 # AUTHOR INFORMATION:
 # Kimberly MacKay
@@ -15,12 +21,18 @@
 # PO Box 1866, Mountain View, CA 94042, USA.
 
 # import relavent libraries
+import sys
+import numpy as np
 from mpl_toolkits import mplot3d
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import time
+
+# read in the data
+filename = sys.argv[1]
+data_embedded = np.loadtxt(filename)
 
 # generate a figure of the results
 fig = plt.figure()
