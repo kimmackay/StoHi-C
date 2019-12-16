@@ -1,11 +1,15 @@
 ## 3D visualization and basic animation of XYZ coordinates from step 1 of StoHi-C
-## This script uses chart studio from plotly (https://chart-studio.plot.ly/create/#/)
+## This script uses plotly to generate a 3D scatter plot
 ## currently all the parameters are hardcoded for s. pombe data
 
 ## Argument 1: the XYZ co-ordinates for each genomic bin generated from step 1
 ##			   this file should have the XYZ coords for each bin on a separate line
 ##			   each coord should be separated by white space, bins should be in sorted
 ##			   numerical order, there shouldn't be any column or row labels
+## Argument 2: the name of the file for the output image
+## Argument 2: the name of the file for the output html (interactive graph)
+
+
 
 # AUTHOR INFORMATION:
 # Kimberly MacKay
@@ -22,10 +26,16 @@
 
 # import relavent libraries
 import sys
+import time
 import numpy as np
 from plotly import graph_objs as go
 import chart_studio.plotly as py
 import plotly.io as pio
+
+start_time = time.time()
+
+outimagename = sys.argv[2]
+outfilename = sys.argv[3]
 
 # read in the data
 filename = sys.argv[1]
@@ -35,34 +45,40 @@ data_embedded = np.loadtxt(filename)
 fig = go.Figure()
 
 # chr1
-fig.add_trace(go.Scatter3d(	x=data_embedded[0:557,0], 
-							y=data_embedded[0:557,1], 
-							z=data_embedded[0:557,2],
+fig.add_trace(go.Scatter3d(	x=data_embedded[0:558,0], 
+							y=data_embedded[0:558,1], 
+							z=data_embedded[0:558,2],
                             mode='markers',
+#                            opacity=0.4,
                             name="CHR1"))
                             
 # chr2
-fig.add_trace(go.Scatter3d(	x=data_embedded[558:1011,0], 
-							y=data_embedded[558:1011,1], 
-							z=data_embedded[558:1011,2],
+fig.add_trace(go.Scatter3d(	x=data_embedded[558:1012,0], 
+							y=data_embedded[558:1012,1], 
+							z=data_embedded[558:1012,2],
                             mode='markers',
+#                            opacity=0.4,
                             name="CHR2"))
                             
 # chr3
-fig.add_trace(go.Scatter3d(	x=data_embedded[1012:1257,0], 
-							y=data_embedded[1012:1257,1], 
-							z=data_embedded[1012:1257,2],
+fig.add_trace(go.Scatter3d(	x=data_embedded[1012:1258,0], 
+							y=data_embedded[1012:1258,1], 
+							z=data_embedded[1012:1258,2],
                             mode='markers',
+#                            opacity=0.4,
                             name="CHR3"))
 
 
 # adds grey border to nodes
 fig.update_traces(marker=dict(size=12,
-                              line=dict(width=2,
-                                        color='DarkSlateGrey')),
+                             line=dict(width=2,
+                                        color='black')),
 						                selector=dict(mode='markers'))
 
                              
+fig.write_image(outimagename)
+#plot_url =  py.plot(fig, filename=outfilename, auto_open=False)
+plot_url = pio.write_html(fig, file=outfilename, auto_open=False)
 
-fig.write_image("tSNE.png")
-plot_url =  py.plot(fig, auto_open=False, filename="S. pombe genome")
+stop_time = time.time()
+print("Step 2 runtime: " + str(stop_time - start_time) + " seconds")
