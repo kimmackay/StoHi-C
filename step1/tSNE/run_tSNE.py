@@ -62,10 +62,10 @@ dist_file = sys.argv[3]
 
 # initialize the distance matrix
 dist_matrix = np.zeros((1258,1258))
-print("importing file..." )
+#print("importing file..." )
 dist_matrix = populate_matrix(input_file, dist_matrix)
 
-print("IF sum: " + str(np.sum(dist_matrix)))
+#print("IF sum: " + str(np.sum(dist_matrix)))
 
 # gut check that all the self-self interactions are zero
 if sum(dist_matrix.diagonal()) != 0:
@@ -73,15 +73,21 @@ if sum(dist_matrix.diagonal()) != 0:
 
 #run TSNE
 #https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html
-print("running tSNE...")
+#print("running tSNE...")
 start_time = time.time()
-data_embedded = TSNE(n_components = 3, perplexity=5.0, early_exaggeration=3.0, n_iter=5000, method='exact', init='pca').fit_transform(dist_matrix)
+data_embedded = TSNE(n_components = 3, perplexity=3.0, early_exaggeration=10.0, n_iter=5000, method='exact', init='pca').fit_transform(dist_matrix)
+# n_components = dimensionality
+# perplexity = # of nearest neighbours
+# early_exaggeration = determines how "close" nodes will be in the final embedding larger values = farther apart
+# n_iter = maximum number of iterations for the optimization
+# method = exact (alternative would be an approximation)
+# init = run PCA and use those results as input to tSNE
 stop_time = time.time()
 
 print("tSNE runtime: " + str(stop_time - start_time) + " seconds")
 
 # output embedded data
-print("outputting results...")
+#print("outputting results...")
 np.savetxt(coord_file, data_embedded)
 
 # output distance matrix
