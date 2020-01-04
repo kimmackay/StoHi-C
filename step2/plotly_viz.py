@@ -41,43 +41,92 @@ outfilename = sys.argv[3]
 filename = sys.argv[1]
 data_embedded = np.loadtxt(filename)
 
+
 # generate a figure of the results
 fig = go.Figure()
 
-# chr1
-fig.add_trace(go.Scatter3d(	x=data_embedded[0:558,0], 
+
+# chr1 - WT 
+fig.add_trace(go.Scatter3d(	x=data_embedded[0:558,0],
 							y=data_embedded[0:558,1], 
 							z=data_embedded[0:558,2],
                             mode='markers',
-#                            opacity=0.4,
+                            opacity=0.5,
                             name="CHR1"))
                             
-# chr2
+                            
+# chr1 - WT no centromeres or telomeres
+#fig.add_trace(go.Scatter3d( x=np.concatenate((data_embedded[5:374,0], data_embedded[379:557,0])),
+#							 y=np.concatenate((data_embedded[5:374,1], data_embedded[379:557,1])), 
+#							 z=np.concatenate((data_embedded[5:374,2], data_embedded[379:557,2])),
+#                            mode='lines+markers',
+#                            opacity=0.4,
+#                            name="CHR1"))
+                            
+# chr2 - WT
 fig.add_trace(go.Scatter3d(	x=data_embedded[558:1012,0], 
-							y=data_embedded[558:1012,1], 
+							y=data_embedded[558:1012,1],
 							z=data_embedded[558:1012,2],
                             mode='markers',
-#                            opacity=0.4,
+                           opacity=0.5,
                             name="CHR2"))
                             
+# chr2 - WT no centromeres or telomeres
+#fig.add_trace(go.Scatter3d( x=np.concatenate((data_embedded[561:717,0], data_embedded[723:1008,0])), 
+#							 y=np.concatenate((data_embedded[561:717,1], data_embedded[723:1008,1])), 
+#							 z=np.concatenate((data_embedded[561:717,2], data_embedded[723:1008,2])),
+#                            mode='lines+markers',
+#                            opacity=0.4,
+#                            name="CHR2"))
+                            
 # chr3
-fig.add_trace(go.Scatter3d(	x=data_embedded[1012:1258,0], 
-							y=data_embedded[1012:1258,1], 
+fig.add_trace(go.Scatter3d(	x=data_embedded[1012:1258,0],
+							y=data_embedded[1012:1258,1],
 							z=data_embedded[1012:1258,2],
                             mode='markers',
-#                            opacity=0.4,
+                           opacity=0.5,
                             name="CHR3"))
+                            
+# chr3 - WT no centromeres or telomeres
+#fig.add_trace(go.Scatter3d( x=np.concatenate((data_embedded[1015:1118,0], data_embedded[1126:1258,0])),
+#							 y=np.concatenate((data_embedded[1015:1118,1], data_embedded[1126:1258,1])),
+#							 z=np.concatenate((data_embedded[1015:1118,2], data_embedded[1126:1258,2])),
+#                            mode='lines+markers',
+#                            opacity=0.4,
+#                            name="CHR3"))
 
 
-# adds grey border to nodes
-fig.update_traces(marker=dict(size=12,
-                             line=dict(width=2,
-                                        color='black')),
-						                selector=dict(mode='markers'))
+# set marker size
+fig.update_traces(marker=dict(size=5))
 
+# set axis titles
+fig.update_layout(scene = dict(
+                    xaxis_title='X',
+                    yaxis_title='Y',
+                    zaxis_title='Z'))
+                    
+# set background colours, remove tick labels
+fig.update_layout(scene = dict(
+                    xaxis = dict(
+                         backgroundcolor="rgb(245,245,245)",
+                         gridcolor="white",
+                         showbackground=True,
+                         zerolinecolor="white",
+                         showticklabels=False,),
+                    yaxis = dict(
+                        backgroundcolor="rgb(230,230,230)",
+                        gridcolor="white",
+                        showbackground=True,
+                        zerolinecolor="white",
+                        showticklabels=False,),
+                    zaxis = dict(
+                        backgroundcolor="rgb(215,215,215)",
+                        gridcolor="white",
+                        showbackground=True,
+                        zerolinecolor="white",
+                        showticklabels=False,),))
                              
 fig.write_image(outimagename)
-#plot_url =  py.plot(fig, filename=outfilename, auto_open=False)
 plot_url = pio.write_html(fig, file=outfilename, auto_open=False)
 
 stop_time = time.time()

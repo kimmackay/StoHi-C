@@ -75,19 +75,21 @@ if sum(dist_matrix.diagonal()) != 0:
 #https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html
 #print("running tSNE...")
 start_time = time.time()
-data_embedded = TSNE(n_components = 3, perplexity=3.0, early_exaggeration=10.0, n_iter=5000, method='exact', init='pca').fit_transform(dist_matrix)
+
+# parameters
 # n_components = dimensionality
 # perplexity = # of nearest neighbours
 # early_exaggeration = determines how "close" nodes will be in the final embedding larger values = farther apart
 # n_iter = maximum number of iterations for the optimization
 # method = exact (alternative would be an approximation)
 # init = run PCA and use those results as input to tSNE
+data_embedded = TSNE(n_components = 3, perplexity=5.0, early_exaggeration=3.0, n_iter=5000, method='exact', init='pca').fit_transform(dist_matrix)
+
 stop_time = time.time()
 
 print("tSNE runtime: " + str(stop_time - start_time) + " seconds")
 
 # output embedded data
-#print("outputting results...")
 np.savetxt(coord_file, data_embedded)
 
 # output distance matrix
